@@ -203,7 +203,7 @@ def getEncKey(password):
 	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', password.encode(), b'enckey', 100000)).decode()
 
 def getSalt(password):
-	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', password.encode(), b'salt', 100000, 8)).decode()
+	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', password.encode(), b'salt', 100000)).decode()
 
 def getPathHash(salt, path):
 	text = salt + ":" + path + ":" + getPathMTime(path) + ":" + str(os.path.getsize(path))
