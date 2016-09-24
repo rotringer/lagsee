@@ -105,7 +105,7 @@ def commandBackup():
 
 	writeLog(log, 'Backup started', True)
 
-	status = {'ignored':0, 'skipped':0, 'updated':0}
+	status = {'ignored':0, 'skipped':0, 'updated':0, 'size':0, 'packed_size':0}
 
 	ret = True
 
@@ -126,9 +126,7 @@ def commandBackup():
 			writeFileList(log, filelist, dir_dst)
 
 
-	summary = '  Updated: ' + str(status['updated']) + \
-			  ', Skipped: ' + str(status['skipped']) + \
-			  ', Ignored: ' + str(status['ignored'])
+	summary = '  Updated: %d (%d KiB -> %d KiB), Skipped: %d, Ignored: %d' % (status['updated'], status['size']/1024, status['packed_size']/1024, status['skipped'], status['ignored'])
 
 	print('\n')
 
@@ -156,7 +154,7 @@ def commandCheck():
 		print('Error: no backup directories specified')
 		sys.exit()
 
-	status = {'ignored':0, 'skipped':0, 'updated':0}
+	status = {'ignored':0, 'skipped':0, 'updated':0, 'size':0}
 
 	ret = True
 
@@ -173,9 +171,8 @@ def commandCheck():
 		if not ret:
 			break;
 
-	summary = '  Updated: ' + str(status['updated']) + \
-		      ', Skipped: ' + str(status['skipped']) + \
-		      ', Ignored: ' + str(status['ignored'])
+	summary = '  Updated: %d (%d KiB), Skipped: %d, Ignored: %d' % (status['updated'], status['size']/1024, status['skipped'], status['ignored'])
+
 
 	print('\n')
 
@@ -273,7 +270,7 @@ def backupDirectory(log, filelist, config, status, checkmode, path_src, path_dst
 			return False
 
 		if not checkmode:
-			sys.stdout.write("\r Updated: %d, Skipped: %d, Ignored: %d" % (status['updated'], status['skipped'], status['ignored']) )
+			sys.stdout.write('\r  Updated: %d (%d KiB -> %d KiB), Skipped: %d, Ignored: %d' % (status['updated'], status['size']/1024, status['packed_size']/1024, status['skipped'], status['ignored']))
 
 		rpath = path_base + file
 		#fpath = path_src + '/' + rpath
@@ -337,6 +334,9 @@ def backupDirectory(log, filelist, config, status, checkmode, path_src, path_dst
 
 							return False
 
+						status['packed_size'] = status['packed_size'] + os.path.getsize(efilepath)
+
+					status['size'] = status['size'] + filesize
 					status['updated'] = status['updated'] + 1
 
 	return True
