@@ -1,0 +1,13 @@
+{
+	"directories": [{
+		"source": "/Volumes/Music",
+		"destination": "/Volumes/Backup/backup_music"
+	}],
+	"_password": "testtest",
+	"enckey": "f3f5a422d1c0d583e9f9aa9be39370d3259ba72592f50f9c1d1b79c07452c430",
+	"log_dir": "test_log",
+	"ignores": [".DS_Store", "Thumbs.db"],
+	"nocompress": ["*.zip", "*.lzh", "*.7z", "*.rar", "*.cab", "*.mpg", "*.mpeg", "*.avi", "*.ts", "*.mp4", "*.flac", "*.m4a", "*.mp3", "*.ape", "*.tta", "*.wmv", "*.wma", "*.iso", "*.dmg", "*.img"],
+	"volume": 512,
+	"_compresslevel": 3
+}
